@@ -1,0 +1,135 @@
+:root {
+  /* 
+      FIRST WE'LL DEFINE OUR SWATCHES, i.e. THE COMPLEMENTARY
+      COLORS THAT WE'LL USE TOGETHER IN MULTIPLE PLACES THAT
+      TOGETHER WILL MAKE UP A GIVEN THEME
+  */
+  --swatch-foundation:    #EEEEDD; /* USED FOR BODY BACKGROUND */
+  --swatch-primary:       #E6E6E6; /* DOMINANT COLOR, USED FOR MOST BACKGROUNDS */
+  --swatch-complement:    #E1E4CB; /* USED IN FORGROUND OF PRIMARY FOR TEXT AND BORDERS */
+  --swatch_contrast:      #111111; /* USED IN MOUSE-OVER SELECTION OF LARGE ELEMENTS */
+  --swatch-accent:        #669966; /* USED IN MOUSE-OVER SELECTION OF TEXT AND BORDERS */    
+  --my-font-family:          "Robaaaoto";
+  --bounceEasing: cubic-bezier(0.51, 0.92, 0.24, 1.15);
+}
+
+body {
+  background-color: var(--swatch-foundation);
+  font-family: 'Lexend Exa';
+}
+
+div.banner {
+  background-image: linear-gradient(to bottom,         
+  #b8b808, #636723);
+  color: white;
+  font-size: 48pt;
+  border-color: black;
+  border-width: 2px;
+  border-style: solid;
+  border-radius: 10px;
+  padding-left: 10%;
+  padding-top: 5%;
+  padding-bottom: 5%;
+}
+
+.home_new_list_button {
+  font-size: 32pt;
+}
+.home_new_list_button:hover {
+  box-shadow: 1px 2px;
+}
+
+.input-field {
+  color: grey;
+}
+
+.card, .card-content {
+  padding: 10px;
+  margin: .5rem .5rem .5rem .5rem;
+  cursor: pointer;
+}
+
+.item-description {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.row {
+  margin-bottom: 1px;
+}
+
+.task-header, .date-header, .status-header {
+  font-weight: bold;
+  font-size: 24px;
+  cursor: pointer;
+  color: white;
+}
+
+.task-header:hover, .date-header:hover, .status-header:hover {
+  color: #408080;
+}
+
+.add-card {
+  font-size: 24px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.section {
+  padding-bottom: 0rem;
+  padding-top: 0rem;
+}
+
+.trash-can {
+  font-size: 40px;
+  cursor: pointer;
+  background-color: Transparent;
+  border: none;
+  overflow: hidden;
+  outline:none;
+}
+
+.fixed-action-btn {
+  position: relative;
+  float: right;
+}
+
+.setting-button {
+  left: -24px;
+  bottom: -6px;
+}
+
+.main-container {
+  width: 90%;
+}
+
+#modal1 {
+  width: 30%;
+}
+
+.modal-close {
+  float: left;
+}
+
+.item_background {
+  background-color: white;
+  width: 70%;
+  position: absolute;
+  top: 35%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  
+}
+
+.form {
+  margin-top: 0px;
+}
+
+.item-button {
+  padding: 10px;
+}
+
+a {
+  color: black;
+}
