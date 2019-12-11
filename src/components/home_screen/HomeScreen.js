@@ -12,12 +12,11 @@ class HomeScreen extends Component {
         gotNew: false
     }
 
-
     handleNewList = () => {
         var newFramer = {
             controls: [],
             name: 'Unknown',
-            UID: this.auth.uid,
+            uid: this.props.auth.uid,
             timestamp: new Date()
         }
         const firestore = getFirestore();

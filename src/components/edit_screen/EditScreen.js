@@ -8,27 +8,20 @@ import M from 'materialize-css';
 
 
 
-class ListScreen extends Component {
+class EditScreen extends Component {
     
     state = {
-        name:this.getListName(),
-        owner:this.getListOwner(),
+        name:this.getWireframerName(),
         
     }
 
-    getListName() {
+    getWireframerName() {
         if (this.props.wireframer) {
             let name = this.props.wireframer.name;
             return name;
         }
     }
 
-    getListOwner() {
-        if (this.props.wireframe) {
-            let owner = this.props.wireframe.owner;
-            return owner;
-        }
-    }
 
     handleChange = (e) => {
         const { target } = e;
@@ -38,7 +31,7 @@ class ListScreen extends Component {
             [target.id]: target.value,
         }));
         const firestore = getFirestore()
-        firestore.collection('wireframers').doc(this.props.wireframe.id).update({
+        firestore.collection('wireframers').doc(this.props.wireframer.id).update({
             [target.id]: target.value
         })
 
@@ -46,13 +39,13 @@ class ListScreen extends Component {
 
     deleteList = (e) => {
         const firestore = getFirestore()
-        firestore.collection('wireframers').doc(this.props.wireframe.id).delete();
+        firestore.collection('wireframers').doc(this.props.wireframer.id).delete();
     }
 
 
     componentDidMount(){
         const firestore = getFirestore()
-        firestore.collection('wireframers').doc(this.props.wireframe.id).update({
+        firestore.collection('wireframers').doc(this.props.wireframer.id).update({
             timestamp: new Date()
         })
 
@@ -62,16 +55,27 @@ class ListScreen extends Component {
 
     render() {
         const auth = this.props.auth;
-        const wireframe = this.props.wireframe;
+        const wireframer = this.props.wireframer;
         if (!auth.uid) {
             return <Redirect to="/" />;
         }
-        if(!wireframe) {
+        if(!wireframer) {
             return <Redirect to="/" />;
         }
         return (
-            <div>
-            </div>
+            <div className="container main-container white">
+                <div className="row edit-row">
+                    <div className="col s3">
+                        s3
+                    </div>
+                    <div className="col s6">
+                        s6
+                    </div>
+                    <div className="col s3">
+                        s3
+                    </div>
+                </div>
+
                 <div id="modal1" className="modal">
                     <div className="modal-content">
                         <h4>Delete List?</h4>
@@ -83,8 +87,7 @@ class ListScreen extends Component {
                         <a href="#!" className="modal-close waves-effect waves-green btn-flat">No</a>
                     </div>
                 </div>
-
-            
+            </div>
         );
     }
 }
@@ -92,13 +95,13 @@ class ListScreen extends Component {
 const mapStateToProps = (state, ownProps) => {
   const { id } = ownProps.match.params;
   const { wireframers } = state.firestore.data;
-  const wireframe = wireframers ? wireframers[id] : null;
+  const wireframer = wireframers ? wireframers[id] : null;
 
-  if(wireframe){
-    wireframe.id = id;
+  if(wireframer){
+    wireframer.id = id;
   }
   return {
-    wireframe,
+    wireframer,
     auth: state.firebase.auth,
   };
 };

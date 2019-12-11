@@ -7,11 +7,17 @@ import WireframerCard from './WireframerCard';
 class WireframerLinks extends React.Component {
     render() {
         const wireframers = this.props.wireframers;
+        console.log(wireframers);
+        var myWireframers = wireframers;
+        if(wireframers) {
+            myWireframers = wireframers.filter(wireframer => this.props.auth.uid == wireframer.uid)
+        }
+        console.log(myWireframers)
         return (
             <div className="section">
-                {wireframers && wireframers.map(wireframer => (
+                {myWireframers && myWireframers.map(wireframer => (
                     <Link to={'/wireframers/' + wireframer.id} key={wireframer.id}>
-                        <WireframerCard wireframers={wireframers} />
+                        <WireframerCard wireframer={wireframer} />
                     </Link>
                 ))}
             </div>
