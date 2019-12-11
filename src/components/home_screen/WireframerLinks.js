@@ -3,8 +3,11 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import WireframerCard from './WireframerCard';
+import { getFirestore } from 'redux-firestore';
+
 
 class WireframerLinks extends React.Component {
+
     render() {
         const wireframers = this.props.wireframers;
         console.log(wireframers);
@@ -17,7 +20,7 @@ class WireframerLinks extends React.Component {
             <div className="section">
                 {myWireframers && myWireframers.map(wireframer => (
                     <Link to={'/wireframers/' + wireframer.id} key={wireframer.id}>
-                        <WireframerCard wireframer={wireframer} />
+                        <WireframerCard wireframer={wireframer} id ={wireframer.id} />
                     </Link>
                 ))}
             </div>

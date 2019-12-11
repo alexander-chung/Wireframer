@@ -100,7 +100,9 @@ div.banner {
 }
 
 .main-container {
-  width: 90%;
+  margin-top: 5px;
+  width: 100%;
+  max-width: 1550px;
 }
 
 #modal1 {
@@ -136,4 +138,29 @@ a {
 
 .edit-row {
   width: 100%
+}
+
+.zoomin, .zoomout {
+  width: 20%
+}
+
+.img {
+  max-width: 23px;
+  max-height: 23px;
+  margin: 3px;
+}
+
+.save-button {
+  
+  margin-right: 5px;
+  margin-left: 5px;
+  
+}
+
+.close-button {
+  right: 0%;
+}
+
+.edit1 {
+  border-right: 1px solid black;
 }

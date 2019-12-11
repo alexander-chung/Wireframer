@@ -12,6 +12,8 @@ class HomeScreen extends Component {
         gotNew: false
     }
 
+    
+
     handleNewList = () => {
         var newFramer = {
             controls: [],

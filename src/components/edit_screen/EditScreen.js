@@ -9,10 +9,10 @@ import M from 'materialize-css';
 
 
 class EditScreen extends Component {
-    
+
     state = {
-        name:this.getWireframerName(),
-        
+        name: this.getWireframerName(),
+        close: false
     }
 
     getWireframerName() {
@@ -30,27 +30,44 @@ class EditScreen extends Component {
             ...state,
             [target.id]: target.value,
         }));
-        const firestore = getFirestore()
-        firestore.collection('wireframers').doc(this.props.wireframer.id).update({
-            [target.id]: target.value
+        // const firestore = getFirestore()
+        // firestore.collection('wireframers').doc(this.props.wireframer.id).update({
+        //     [target.id]: target.value
+        // })
+
+    }
+
+    processZoomIn = (e) => {
+        console.log("ZOOM IN!!!!")
+
+    }
+
+    processZoomOut = (e) => {
+        console.log("ZOOM OUT!!!!")
+    }
+
+    processSave = (e) => {
+        console.log("SAVE!!!!!!!")
+    }
+
+    processClose = (e) => {
+        console.log("CLOSE!!!!!!")
+    }
+
+    goHome = (e) => {
+        this.setState({
+            close: true
         })
-
     }
 
-    deleteList = (e) => {
-        const firestore = getFirestore()
-        firestore.collection('wireframers').doc(this.props.wireframer.id).delete();
-    }
-
-
-    componentDidMount(){
+    componentDidMount() {
         const firestore = getFirestore()
         firestore.collection('wireframers').doc(this.props.wireframer.id).update({
             timestamp: new Date()
         })
 
         var elems = document.querySelectorAll('.modal');
-        var instances = M.Modal.init(elems, { opactity: 0.6});
+        var instances = M.Modal.init(elems, { opactity: 0.6 });
     }
 
     render() {
@@ -59,17 +76,33 @@ class EditScreen extends Component {
         if (!auth.uid) {
             return <Redirect to="/" />;
         }
-        if(!wireframer) {
+        if (!wireframer) {
             return <Redirect to="/" />;
+        }
+        if (this.state.close) {
+            return <Redirect to="/" />;
+        }
+
+        var saveCloseStyle = {
+            border: 'solid',
         }
         return (
             <div className="container main-container white">
                 <div className="row edit-row">
-                    <div className="col s3">
-                        s3
+                    <div className="col s2 edit1">
+                        <div className="input-field">
+                            <label className="active" htmlFor="email">Name</label>
+                            <input className="active" type="text" name="name" id="name" onChange={this.handleChange} value={this.state.name} />
+                        </div>
+                        <div className="row" style={saveCloseStyle}>
+                            <button className="col s3" onClick={this.processZoomIn}><i className="material-icons">zoom_in</i></button>
+                            <button className="col s3" onClick={this.processZoomOut}><i className="material-icons">zoom_out</i></button>
+                            <button onClick={this.processSave} className="save-button">Save</button>
+                            <button data-target="modal1" className="close-button modal-trigger">Close</button>
+                        </div>
                     </div>
-                    <div className="col s6">
-                        s6
+                    <div className="col s7">
+                        s7
                     </div>
                     <div className="col s3">
                         s3
@@ -78,13 +111,13 @@ class EditScreen extends Component {
 
                 <div id="modal1" className="modal">
                     <div className="modal-content">
-                        <h4>Delete List?</h4>
-                        <p><b>Are you sure you want to delete this list?</b></p>
-                        <p>The list will not be retrievable.</p>
+                        <h4>Close this Wireframer?</h4>
+
                     </div>
                     <div className="modal-footer">
-                        <a className="modal-close waves-effect waves-green btn-flat" onClick={this.deleteList}>Yes</a>
-                        <a href="#!" className="modal-close waves-effect waves-green btn-flat">No</a>
+                        <a className="waves-effect waves-green btn-flat" onClick={this.saveAndClose}>Save & Close</a>
+                        <a className="waves-effect waves-green btn-flat" onClick={this.goHome}>Close</a>
+                        <a href="#!" className="modal-close waves-effect waves-green btn-flat">Cancel</a>
                     </div>
                 </div>
             </div>
@@ -93,23 +126,23 @@ class EditScreen extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  const { id } = ownProps.match.params;
-  const { wireframers } = state.firestore.data;
-  const wireframer = wireframers ? wireframers[id] : null;
+    const { id } = ownProps.match.params;
+    const { wireframers } = state.firestore.data;
+    const wireframer = wireframers ? wireframers[id] : null;
 
-  if(wireframer){
-    wireframer.id = id;
-  }
-  return {
-    wireframer,
-    auth: state.firebase.auth,
-  };
+    if (wireframer) {
+        wireframer.id = id;
+    }
+    return {
+        wireframer,
+        auth: state.firebase.auth,
+    };
 };
 
 
 export default compose(
-  connect(mapStateToProps),
-  firestoreConnect([
-    { collection: 'wireframers' },
-  ]),
+    connect(mapStateToProps),
+    firestoreConnect([
+        { collection: 'wireframers' },
+    ]),
 )(EditScreen);
