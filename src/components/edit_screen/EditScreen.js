@@ -12,7 +12,9 @@ class EditScreen extends Component {
 
     state = {
         name: this.getWireframerName(),
-        close: false
+        close: false,
+        pixelWidth: 900,
+        pixelHeight: 800,
     }
 
     getWireframerName() {
@@ -30,10 +32,7 @@ class EditScreen extends Component {
             ...state,
             [target.id]: target.value,
         }));
-        // const firestore = getFirestore()
-        // firestore.collection('wireframers').doc(this.props.wireframer.id).update({
-        //     [target.id]: target.value
-        // })
+        
 
     }
 
@@ -48,7 +47,12 @@ class EditScreen extends Component {
 
     processSave = (e) => {
         console.log("SAVE!!!!!!!")
-    }
+        const firestore = getFirestore()
+        firestore.collection('wireframers').doc(this.props.wireframer.id).update({
+            name: this.state.name
+        })
+        this.goHome();
+    }  
 
     processClose = (e) => {
         console.log("CLOSE!!!!!!")
@@ -58,6 +62,22 @@ class EditScreen extends Component {
         this.setState({
             close: true
         })
+    }
+
+    createContainer = (e) => {
+        console.log("CONTAINER CREATE")
+    }
+
+    createLabel = (e) => {
+        console.log("LABEL CREATE")
+    }
+
+    createSubmitBox = (e) => {
+        console.log("SUBMIT BOX CREATE")
+    }
+
+    createTextField = (e) => {
+        console.log("TEXTFIELD CREATE")
     }
 
     componentDidMount() {
@@ -83,29 +103,60 @@ class EditScreen extends Component {
             return <Redirect to="/" />;
         }
 
-        var saveCloseStyle = {
-            border: 'solid',
-        }
         return (
             <div className="container main-container white">
                 <div className="row edit-row">
                     <div className="col s2 edit1">
                         <div className="input-field">
-                            <label className="active" htmlFor="email">Name</label>
+                            <label className="active" htmlFor="name">name</label>
                             <input className="active" type="text" name="name" id="name" onChange={this.handleChange} value={this.state.name} />
                         </div>
-                        <div className="row" style={saveCloseStyle}>
-                            <button className="col s3" onClick={this.processZoomIn}><i className="material-icons">zoom_in</i></button>
-                            <button className="col s3" onClick={this.processZoomOut}><i className="material-icons">zoom_out</i></button>
+                        <div className="row">
+                            <div className="input-field col s4">
+                                <label className="active" htmlFor="pixelWidth">Width:</label>
+                                <input className="active" type="number" name="pixelWidth" max="5000" min="1" id="pixelWidth" onChange={this.handleChange} value={this.state.pixelWidth} />
+                            </div>
+                            <div className="input-field col s4">
+                                <label className="active" htmlFor="pixelHeight">Height:</label>
+                                <input className="active" type="number" name="pixelHeight" max="5000" min="1" id="pixelHeight" onChange={this.handleChange} value={this.state.pixelHeight} />
+                            </div>
+                            <button className="col s4 update-button">Update</button>
+                            
+                        </div>
+                        <div className="row botBord">
+                            <button className="col s3 zoomin" onClick={this.processZoomIn}><i className="material-icons">zoom_in</i></button>
+                            <button className="col s3 zoomout" onClick={this.processZoomOut}><i className="material-icons">zoom_out</i></button>
                             <button onClick={this.processSave} className="save-button">Save</button>
                             <button data-target="modal1" className="close-button modal-trigger">Close</button>
                         </div>
+                        <div className="container">
+                            <br/><br/>
+                            <div className="display-1" onClick={this.createContainer}>
+                                <div className="display-container"> </div>
+                                <div className="display-container-description">Container</div>
+                            </div>
+                            <br/><br/><br/>
+                            <div className="display-2" onClick={this.createLabel}>
+                                <div className="display-label">Prompt for Input:</div>
+                                <div className="display-label-description">Label</div>
+                            </div>
+                            <br/><br/><br/>
+                            <div className="display-3" onClick={this.createSubmitBox}>
+                                <button className="display-submit">Submit</button>
+                                <div className="display-submit-description">Button</div>
+                            </div>
+                            <br/><br/><br/>
+                            <div className="display-4" onClick={this.createTextField}>
+                                <div className="display-textfield">Input</div>
+                                <div className="display-textfield-description">Textfield</div>
+                            </div>
+                        </div>
                     </div>
-                    <div className="col s7">
-                        s7
+                    <div className="col s7 edit2">
+                        
                     </div>
-                    <div className="col s3">
-                        s3
+                    <div className="col s3 edit3">
+                        
                     </div>
                 </div>
 
