@@ -152,11 +152,42 @@ class EditScreen extends Component {
                             </div>
                         </div>
                     </div>
-                    <div className="col s7 edit2">
+                    <div className="col s8 edit2">
                         
                     </div>
-                    <div className="col s3 edit3">
-                        
+                    <div className="col s2 edit3">
+                        <div className="properties-label">Properties</div>
+                        <input type="textfield" className="properties-box"></input>
+                        <br/>
+                        <div className="row">
+                            <div className="font-size-label col s6">Font Size:</div>
+                            <input type="number" className="browser-default font-size-box col s6"></input>
+                        </div>
+                        <br/><br/><br/>
+                        <div className="row">
+                            <div className="font-color-label col s5">Font Color:</div>
+                            <input type="color" className="browser-default font-color-box col s7"></input>
+                        </div>
+                        <br/><br/><br/>
+                        <div className="row">
+                            <div className="background-color-label col s5">Background Color:</div>
+                            <input type="color" className="background-color-box col s7"></input>
+                        </div>
+                        <br/><br/>
+                        <div className="row">
+                            <div className="border-color-label col s5">Border Color:</div>
+                            <input type="color" className="border-color-box col s7"></input>
+                        </div>
+                        <br/><br/><br/>
+                        <div className="row">
+                            <div className="border-thickness-label col s5">Border Thickness:</div>
+                            <input type="textfield" className="border-thickness-box col s7"></input>
+                        </div>
+                        <br/><br/>
+                        <div className="row">
+                            <div className="border-radius-label col s5">Border Radius:</div>
+                            <input type="number" className="browser-default border-radius-box col s7"></input>
+                        </div>
                     </div>
                 </div>
 

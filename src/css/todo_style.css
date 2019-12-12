@@ -186,6 +186,14 @@ a {
   border-bottom: 1px solid black;
 }
 
+.card-width {
+  width: 300px;
+}
+
+.delete-button {
+  transform: translate(-40px, 35px);
+}
+
 .update-button {
   transform: translateY(20px);
   max-width: 70px;
@@ -239,4 +247,68 @@ a {
   transform: translateX(40px);
   font-weight: bold
 
+}
+
+.properties-label {
+  font-weight: bold;
+  transform: translateY(10px);
+}
+
+.properties-box {
+  max-width: 250px;
+  transform: translateY(10px);
+  height: 30px;
+  font-size: 14px;
+}
+
+.font-size-label {
+  font-weight: bold;
+  transform: translateY(40px);
+}
+
+.font-size-box {
+  max-width: 75px;
+  transform: translate(-20px,35px);
+  height: 35px;
+  font-size: 14px;
+}
+
+.font-color-label {
+  font-weight: bold
+}
+
+.font-color-box {
+  max-width: 100px;
+}
+
+.background-color-label {
+  font-weight: bold
+}
+
+.background-color-box {
+  max-width: 100px;
+}
+
+.border-color-label {
+  font-weight: bold
+}
+
+.border-color-box {
+  max-width: 100px;
+}
+
+.border-thickness-label {
+  font-weight: bold
+}
+
+.border-thickness-box {
+  max-width: 100px;
+}
+
+.border-radius-label {
+  font-weight: bold
+}
+
+.border-radius-box {
+  max-width: 100px;
 }

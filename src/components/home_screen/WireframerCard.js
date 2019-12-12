@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { getFirestore } from 'redux-firestore';
@@ -8,6 +8,10 @@ import M from 'materialize-css';
 
 class WireframerCard extends React.Component {
 
+    state = {
+        close: false
+    }
+
     stopProp = (e) => {
         e.preventDefault()
     }
@@ -15,6 +19,9 @@ class WireframerCard extends React.Component {
     deleteWireframer = (e) => {
         const firestore = getFirestore()
         firestore.collection('wireframers').doc(this.props.id).delete();
+        this.setState({
+            close: true
+        })
     }
 
     componentDidMount(){
@@ -23,14 +30,17 @@ class WireframerCard extends React.Component {
     }
 
     render() {
+        if(this.state.close == true) {
+            return <Redirect to="/"/>
+        }
         const { wireframer } = this.props;
         return (
             <div className="card z-depth-0">
                 <div className="row">
-                    <button data-target="modal2" className="modal-trigger col 3" onClick={this.stopProp}>&#10007;</button>
-                    <div className="card-content grey-text text-darken-3 col 9">
-                        <span className="card-title">{wireframer.name}</span>
-                    </div>
+                    <button data-target="modal2" className="modal-trigger col 3 delete-button" onClick={this.stopProp}>&#10007;</button>
+                        <div className="card-content grey-text text-darken-3 col 9 card-width">
+                            <span className="card-title">{wireframer.name}</span>
+                        </div>
                 </div>
                 <div id="modal2" className="modal">
                     <div className="modal-content">
