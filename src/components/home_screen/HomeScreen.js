@@ -19,7 +19,9 @@ class HomeScreen extends Component {
             controls: [],
             name: 'Unknown',
             uid: this.props.auth.uid,
-            timestamp: new Date()
+            timestamp: new Date(),
+            pixelWidth: 900,
+            pixelHeight: 700
         }
         const firestore = getFirestore();
         firestore.collection('wireframers').add(newFramer).then(() => {

@@ -312,3 +312,18 @@ a {
 .border-radius-box {
   max-width: 100px;
 }
+
+.main-edit-screen {
+  postion: absolute;
+  width: 950px;
+  height: 750px;
+  border: 1px solid black;
+  transform: translate(30px,25px);
+  overflow: auto;
+  background: #e5e5e5;
+  padding: 1px;
+}
+
+.main-wireframer {
+  overflow: auto;
+}
