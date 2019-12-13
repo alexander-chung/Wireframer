@@ -68,16 +68,16 @@ class EditScreen extends Component {
     }
 
     processZoomIn = (e) => {
-        var zoomTarget = document.getElementById("main-wireframer")
-        zoomTarget.style.zoom = ((this.state.zoom * 2));
+        // var zoomTarget = document.getElementById("main-wireframer")
+        // zoomTarget.style.zoom = ((this.state.zoom * 2));
         this.setState({
             zoom: (this.state.zoom * 2)
         })
     }
 
     processZoomOut = (e) => {
-        var zoomTarget = document.getElementById("main-wireframer")
-        zoomTarget.style.zoom = ((this.state.zoom * 0.5));
+        // var zoomTarget = document.getElementById("main-wireframer")
+        // zoomTarget.style.zoom = ((this.state.zoom * 0.5));
         this.setState({
             zoom: (this.state.zoom * 0.5)
         })
@@ -241,6 +241,37 @@ class EditScreen extends Component {
         })
     }
 
+    handleDeleteDuplicate = (e) => {
+        e.preventDefault();
+        if (e.keyCode === 68 && e.ctrlKey) {
+            if(this.state.selected != -1) {
+                var controls = this.state.controls;
+                var duplicateControl = JSON.parse(JSON.stringify(controls[this.state.selected]));
+                console.log(controls.length)
+                console.log(duplicateControl)
+                duplicateControl.id = controls.length
+                controls.push(duplicateControl);
+                controls.map(control => control.id = controls.indexOf(control))
+                console.log(controls)
+                this.setState({
+                    controls: controls,
+                    selected: this.state.controls.length-1
+                })
+            }
+        }
+        if (e.keyCode === 46) {
+            if(this.state.selected != -1) {
+                var controls = JSON.parse(JSON.stringify(this.state.controls));
+                controls.splice(this.state.selected, 1)
+                controls.map(control => control.id = controls.indexOf(control))
+                this.setState({
+                    controls: controls,
+                    selected: -1
+                })
+            }
+        }
+    }
+
     componentDidMount() {
         const firestore = getFirestore()
         firestore.collection('wireframers').doc(this.props.wireframer.id).update({
@@ -249,6 +280,8 @@ class EditScreen extends Component {
 
         var elems = document.querySelectorAll('.modal');
         var instances = M.Modal.init(elems, { opactity: 0.6 });
+
+        window.addEventListener("keydown", this.handleDeleteDuplicate)
     }
 
     render() {
@@ -266,11 +299,36 @@ class EditScreen extends Component {
             return <Redirect to="/" />;
         }
 
-        var handleStyles = {
+        var handleStylesTL = {
             border: "solid 1px black",
             width: "10px",
             height: "10px",
-            background: "white"
+            background: "white",
+            transform: "translate(5px, 5px)"
+        }
+
+        var handleStylesTR = {
+            border: "solid 1px black",
+            width: "10px",
+            height: "10px",
+            background: "white",
+            transform: "translate(-5px, 5px)"
+        }
+
+        var handleStylesBL = {
+            border: "solid 1px black",
+            width: "10px",
+            height: "10px",
+            background: "white",
+            transform: "translate(5px, -5px)"
+        }
+
+        var handleStylesBR = {
+            border: "solid 1px black",
+            width: "10px",
+            height: "10px",
+            background: "white",
+            transform: "translate(-5px, -5px)"
         }
 
         return (
@@ -324,7 +382,7 @@ class EditScreen extends Component {
                     </div>
                     <div className="col s8 edit2">
                         <div className="main-edit-screen" id="main-edit-screen">
-                            <div className="main-wireframer" onClick={this.handleDeselect} id="main-wireframer" style={{ width: (this.state.pixelWidth + "px"), height: (this.state.pixelHeight + "px"), background: "white" }}>
+                            <div className="main-wireframer" onClick={this.handleDeselect} id="main-wireframer" style={{ width: (this.state.pixelWidth + "px"), height: (this.state.pixelHeight + "px"), background: "white", transform: "scale(" + this.state.zoom + ")", transformOrigin: "top left" }}>
                                 {controls.map(control => (
                                     <Rnd
                                         bounds="parent"
@@ -335,21 +393,21 @@ class EditScreen extends Component {
                                             height: control.height,
                                         }}
                                         resizeHandleStyles={selected == control.id ? {
-                                            topLeft: handleStyles,
-                                            topRight: handleStyles,
-                                            bottomLeft: handleStyles,
-                                            bottomRight: handleStyles
-                                        }: {}}
+                                            topLeft: handleStylesTL,
+                                            topRight: handleStylesTR,
+                                            bottomLeft: handleStylesBL,
+                                            bottomRight: handleStylesBR
+                                        } : {}}
                                         onDragStop={(e, d) => this.handleReposition(control.id, d)}
                                         onResize={(e, dir, ref, delta, position) => this.handleResize(control.id, ref)}
                                     >{control.type == "container" ?
-                                    <div onClick={(evt) => this.handleSelected(control.id, evt)} style={{ width: control.width, height: control.height, border: (control.borderthickness + " " + control.bordercolor + " solid"), background: control.backgroundcolor, borderRadius: control.borderRadius }}></div> :
-                                    control.type == "label" ?
-                                    <div onClick={(evt) => this.handleSelected(control.id, evt)} style={{ overflow: "hidden", width: control.width, height: control.height, border: (control.borderthickness + " " + control.bordercolor + " solid"), background: control.backgroundcolor, borderRadius: control.borderRadius, fontSize: control.fontsize, fontColor: control.fontcolor}}>{control.text}</div> :
-                                    control.type == "button" ?
-                                    <button onClick={(evt) => this.handleSelected(control.id, evt)} style={{ overflow: "hidden", width: control.width, height: control.height, border: (control.borderthickness + " " + control.bordercolor + " solid"), background: control.backgroundcolor, borderRadius: control.borderRadius, fontSize: control.fontsize, fontColor: control.fontcolor }}>{control.text}</button> :
-                                    <input onClick={(evt) => this.handleSelected(control.id, evt)} style={{ overflow: "hidden", width: control.width, height: control.height, border: (control.borderthickness + " " + control.bordercolor + " solid"), background: control.backgroundcolor, borderRadius: control.borderRadius, fontSize: control.fontsize, fontColor: control.fontcolor }} type="text" placeholder="Input"></input>
-                                    }</Rnd>
+                                        <div onClick={(evt) => this.handleSelected(control.id, evt)} style={{ width: control.width, height: control.height, border: (control.borderthickness + " " + control.bordercolor + " solid"), background: control.backgroundcolor, borderRadius: control.borderRadius }}></div> :
+                                        control.type == "label" ?
+                                            <div onClick={(evt) => this.handleSelected(control.id, evt)} style={{ overflow: "hidden", width: control.width, height: control.height, border: (control.borderthickness + " " + control.bordercolor + " solid"), background: control.backgroundcolor, borderRadius: control.borderRadius, fontSize: control.fontsize, fontColor: control.fontcolor }}>{control.text}</div> :
+                                            control.type == "button" ?
+                                                <button onClick={(evt) => this.handleSelected(control.id, evt)} style={{ overflow: "hidden", width: control.width, height: control.height, border: (control.borderthickness + " " + control.bordercolor + " solid"), background: control.backgroundcolor, borderRadius: control.borderRadius, fontSize: control.fontsize, fontColor: control.fontcolor }}>{control.text}</button> :
+                                                <input onClick={(evt) => this.handleSelected(control.id, evt)} style={{ overflow: "hidden", width: control.width, height: control.height, border: (control.borderthickness + " " + control.bordercolor + " solid"), background: control.backgroundcolor, borderRadius: control.borderRadius, fontSize: control.fontsize, fontColor: control.fontcolor }} type="text" placeholder="Input"></input>
+                                        }</Rnd>
                                 ))}
                             </div>
                         </div>
