@@ -15,7 +15,7 @@ class EditScreen extends Component {
         controls: this.getWireframerControls(),
         updateChanged: false,
         close: false,
-        zoom: 100,
+        zoom: 1,
         selected: -1,
         pixelWidth: 900,
         pixelHeight: 700,
@@ -69,7 +69,7 @@ class EditScreen extends Component {
 
     processZoomIn = (e) => {
         var zoomTarget = document.getElementById("main-wireframer")
-        zoomTarget.style.zoom = ((this.state.zoom * 2)+"%");
+        zoomTarget.style.zoom = ((this.state.zoom * 2));
         this.setState({
             zoom: (this.state.zoom * 2)
         })
@@ -77,7 +77,7 @@ class EditScreen extends Component {
 
     processZoomOut = (e) => {
         var zoomTarget = document.getElementById("main-wireframer")
-        zoomTarget.style.zoom = ((this.state.zoom * 0.5)+"%");
+        zoomTarget.style.zoom = ((this.state.zoom * 0.5));
         this.setState({
             zoom: (this.state.zoom * 0.5)
         })
@@ -142,17 +142,17 @@ class EditScreen extends Component {
         var newLabel = {
             id: this.state.controls.length,
             type: "label",
-            width: "100px",
-            height: "25px",
+            width: "40px",
+            height: "20px",
             x: 0,
             y: 0,
             text: "Label",
-            fontsize: "12px",
+            fontsize: "14px",
             fontcolor: "#000000",
             backgroundcolor: "transparent",
             bordercolor: "#000000",
-            borderthickness: "1px",
-            borderradius: "1px"
+            borderthickness: "0px",
+            borderradius: "0px"
         }
 
         var newControls = this.state.controls;
@@ -173,7 +173,7 @@ class EditScreen extends Component {
             text: "Submit",
             fontsize: "12px",
             fontcolor: "#000000",
-            backgroundcolor: "white",
+            backgroundcolor: "#d3d3d3",
             bordercolor: "black",
             borderthickness: "1px",
             borderradius: "1px"
@@ -228,6 +228,19 @@ class EditScreen extends Component {
         })
     }
 
+    handleSelected = (id, evt) => {
+        evt.stopPropagation();
+        this.setState({
+            selected: id
+        })
+    }
+
+    handleDeselect = (e) => {
+        this.setState({
+            selected: -1
+        })
+    }
+
     componentDidMount() {
         const firestore = getFirestore()
         firestore.collection('wireframers').doc(this.props.wireframer.id).update({
@@ -242,7 +255,7 @@ class EditScreen extends Component {
         const auth = this.props.auth;
         const wireframer = this.props.wireframer;
         const updateChanged = this.state.updateChanged;
-        const { controls } = this.state;
+        const { controls, selected } = this.state;
         if (!auth.uid) {
             return <Redirect to="/" />;
         }
@@ -252,6 +265,7 @@ class EditScreen extends Component {
         if (this.state.close) {
             return <Redirect to="/" />;
         }
+
         var handleStyles = {
             border: "solid 1px black",
             width: "10px",
@@ -310,25 +324,32 @@ class EditScreen extends Component {
                     </div>
                     <div className="col s8 edit2">
                         <div className="main-edit-screen" id="main-edit-screen">
-                            <div className="main-wireframer" id="main-wireframer" style={{ width: (this.state.pixelWidth + "px"), height: (this.state.pixelHeight + "px"), background: "white" }}>
-                                {controls.map(control => ( 
+                            <div className="main-wireframer" onClick={this.handleDeselect} id="main-wireframer" style={{ width: (this.state.pixelWidth + "px"), height: (this.state.pixelHeight + "px"), background: "white" }}>
+                                {controls.map(control => (
                                     <Rnd
-                                    bounds="parent"
-                                    default={{
-                                        x: control.x,
-                                        y: control.y,
-                                        width: control.width,
-                                        height: control.height,
-                                    }}
-                                    resizeHandleStyles={{
-                                        topLeft: handleStyles,
-                                        topRight: handleStyles,
-                                        bottomLeft: handleStyles,
-                                        bottomRight: handleStyles
-                                    }}
-                                    onDragStop={(e,d)=> this.handleReposition(control.id, d)}
-                                    onResize={(e,dir,ref,delta, position)=> this.handleResize(control.id, ref)}
-                                    ><div style={{ width: control.width, height: control.height, border: (control.borderthickness + " " + control.bordercolor + " solid"), background: control.backgroundcolor, borderRadius: control.borderRadius}}></div></Rnd>
+                                        bounds="parent"
+                                        default={{
+                                            x: control.x,
+                                            y: control.y,
+                                            width: control.width,
+                                            height: control.height,
+                                        }}
+                                        resizeHandleStyles={selected == control.id ? {
+                                            topLeft: handleStyles,
+                                            topRight: handleStyles,
+                                            bottomLeft: handleStyles,
+                                            bottomRight: handleStyles
+                                        }: {}}
+                                        onDragStop={(e, d) => this.handleReposition(control.id, d)}
+                                        onResize={(e, dir, ref, delta, position) => this.handleResize(control.id, ref)}
+                                    >{control.type == "container" ?
+                                    <div onClick={(evt) => this.handleSelected(control.id, evt)} style={{ width: control.width, height: control.height, border: (control.borderthickness + " " + control.bordercolor + " solid"), background: control.backgroundcolor, borderRadius: control.borderRadius }}></div> :
+                                    control.type == "label" ?
+                                    <div onClick={(evt) => this.handleSelected(control.id, evt)} style={{ overflow: "hidden", width: control.width, height: control.height, border: (control.borderthickness + " " + control.bordercolor + " solid"), background: control.backgroundcolor, borderRadius: control.borderRadius, fontSize: control.fontsize, fontColor: control.fontcolor}}>{control.text}</div> :
+                                    control.type == "button" ?
+                                    <button onClick={(evt) => this.handleSelected(control.id, evt)} style={{ overflow: "hidden", width: control.width, height: control.height, border: (control.borderthickness + " " + control.bordercolor + " solid"), background: control.backgroundcolor, borderRadius: control.borderRadius, fontSize: control.fontsize, fontColor: control.fontcolor }}>{control.text}</button> :
+                                    <input onClick={(evt) => this.handleSelected(control.id, evt)} style={{ overflow: "hidden", width: control.width, height: control.height, border: (control.borderthickness + " " + control.bordercolor + " solid"), background: control.backgroundcolor, borderRadius: control.borderRadius, fontSize: control.fontsize, fontColor: control.fontcolor }} type="text" placeholder="Input"></input>
+                                    }</Rnd>
                                 ))}
                             </div>
                         </div>
@@ -356,7 +377,7 @@ class EditScreen extends Component {
                             <div className="border-color-label col s5">Border Color:</div>
                             <input type="color" className="border-color-box col s7"></input>
                         </div>
-                        <br /><br /><br />
+                        <br /><br />
                         <div className="row">
                             <div className="border-thickness-label col s5">Border Thickness:</div>
                             <input type="textfield" className="border-thickness-box col s7"></input>
