@@ -21,6 +21,13 @@ class EditScreen extends Component {
         pixelHeight: 700,
         pixelWidthProxy: 900,
         pixelHeightProxy: 700,
+        text: "",
+        fontsize: 0,
+        fontcolor: "",
+        backgroundcolor: "",
+        bordercolor: "",
+        borderthickness: 0,
+        borderradius: 0
     }
 
     getWireframerName() {
@@ -60,6 +67,69 @@ class EditScreen extends Component {
         })
     }
 
+    handleChangeText = (e) => {
+        const { target } = e;
+        this.state.controls[this.state.selected].text = target.value
+        this.setState(state => ({
+            ...state,
+            [target.id]: target.value,
+        }));
+    }
+
+    handleChangeFontSize = (e) => {
+        const { target } = e;
+        this.state.controls[this.state.selected].fontsize = target.value + "px"
+        this.setState(state => ({
+            ...state,
+            [target.id]: target.value,
+        }));
+    }
+
+    handleChangeFontColor = (e) => {
+        const { target } = e;
+        this.state.controls[this.state.selected].fontcolor = target.value
+        this.setState(state => ({
+            ...state,
+            [target.id]: target.value,
+        }));
+    }
+
+    handleChangeBackgroundColor = (e) => {
+        const { target } = e;
+        this.state.controls[this.state.selected].backgroundcolor = target.value
+        this.setState(state => ({
+            ...state,
+            [target.id]: target.value,
+        }));
+    }
+
+    handleChangeBorderColor = (e) => {
+        const { target } = e;
+        this.state.controls[this.state.selected].bordercolor = target.value
+        this.setState(state => ({
+            ...state,
+            [target.id]: target.value,
+        }));
+    }
+
+    handleChangeBorderThickness = (e) => {
+        const { target } = e;
+        this.state.controls[this.state.selected].borderthickness = target.value + "px"
+        this.setState(state => ({
+            ...state,
+            [target.id]: target.value,
+        }));
+    }
+
+    handleChangeBorderRadius = (e) => {
+        const { target } = e;
+        this.state.controls[this.state.selected].borderradius = target.value + "px"
+        this.setState(state => ({
+            ...state,
+            [target.id]: target.value,
+        }));
+    }
+
     updatePressed = (e) => {
         this.setState({
             pixelWidth: this.state.pixelWidthProxy,
@@ -80,7 +150,6 @@ class EditScreen extends Component {
     }
 
     processSave = (e) => {
-        console.log("SAVE!!!!!!!")
         const firestore = getFirestore()
         firestore.collection('wireframers').doc(this.props.wireframer.id).update({
             name: this.state.name,
@@ -90,7 +159,6 @@ class EditScreen extends Component {
     }
 
     processSaveAndClose = (e) => {
-        console.log("SAVE!!!!!!!")
         const firestore = getFirestore()
         firestore.collection('wireframers').doc(this.props.wireframer.id).update({
             name: this.state.name,
@@ -98,10 +166,6 @@ class EditScreen extends Component {
             pixelWidth: this.state.pixelWidth
         })
         this.goHome();
-    }
-
-    processClose = (e) => {
-        console.log("CLOSE!!!!!!")
     }
 
     goHome = (e) => {
@@ -172,7 +236,7 @@ class EditScreen extends Component {
             fontsize: "12px",
             fontcolor: "#000000",
             backgroundcolor: "#d3d3d3",
-            bordercolor: "black",
+            bordercolor: "#000000",
             borderthickness: "1px",
             borderradius: "1px"
         }
@@ -195,9 +259,9 @@ class EditScreen extends Component {
             y: 0,
             text: "Input",
             fontsize: "12px",
-            fontcolor: "gray",
-            backgroundcolor: "white",
-            bordercolor: "black",
+            fontcolor: "#d3d3d3",
+            backgroundcolor: "#ffffff",
+            bordercolor: "#000000",
             borderthickness: "1px",
             borderradius: "1px"
         }
@@ -418,12 +482,12 @@ class EditScreen extends Component {
                                         onDragStop={(e, d) => this.handleReposition(control.id, d)}
                                         onResize={(e, dir, ref, delta, position) => this.handleResize(control.id, ref)}
                                     >{control.type == "container" ?
-                                        <div onClick={(evt) => this.handleSelected(control.id, evt)} style={{ width: control.width, height: control.height, border: (control.borderthickness + " " + control.bordercolor + " solid"), background: control.backgroundcolor, borderRadius: control.borderRadius }}></div> :
+                                        <div onClick={(evt) => this.handleSelected(control.id, evt)} style={{ width: control.width, height: control.height, border: (control.borderthickness + " " + control.bordercolor + " solid"), background: control.backgroundcolor, borderRadius: control.borderradius }}></div> :
                                         control.type == "label" ?
-                                            <div onClick={(evt) => this.handleSelected(control.id, evt)} style={{ overflow: "hidden", width: control.width, height: control.height, border: (control.borderthickness + " " + control.bordercolor + " solid"), background: control.backgroundcolor, borderRadius: control.borderRadius, fontSize: control.fontsize, fontColor: control.fontcolor }}>{control.text}</div> :
+                                            <div onClick={(evt) => this.handleSelected(control.id, evt)} style={{ overflow: "hidden", width: control.width, height: control.height, border: (control.borderthickness + " " + control.bordercolor + " solid"), background: control.backgroundcolor, borderRadius: control.borderradius, fontSize: control.fontsize, color: control.fontcolor }}>{control.text}</div> :
                                             control.type == "button" ?
-                                                <button onClick={(evt) => this.handleSelected(control.id, evt)} style={{ overflow: "hidden", width: control.width, height: control.height, border: (control.borderthickness + " " + control.bordercolor + " solid"), background: control.backgroundcolor, borderRadius: control.borderRadius, fontSize: control.fontsize, fontColor: control.fontcolor }}>{control.text}</button> :
-                                                <input onClick={(evt) => this.handleSelected(control.id, evt)} style={{ overflow: "hidden", width: control.width, height: control.height, border: (control.borderthickness + " " + control.bordercolor + " solid"), background: control.backgroundcolor, borderRadius: control.borderRadius, fontSize: control.fontsize, fontColor: control.fontcolor }} type="text" placeholder="Input"></input>
+                                                <button onClick={(evt) => this.handleSelected(control.id, evt)} style={{ overflow: "hidden", width: control.width, height: control.height, border: (control.borderthickness + " " + control.bordercolor + " solid"), background: control.backgroundcolor, borderRadius: control.borderradius, fontSize: control.fontsize, color: control.fontcolor }}>{control.text}</button> :
+                                                <input onClick={(evt) => this.handleSelected(control.id, evt)} style={{ overflow: "hidden", width: control.width, height: control.height, border: (control.borderthickness + " " + control.bordercolor + " solid"), background: control.backgroundcolor, borderRadius: control.borderradius, fontSize: control.fontsize, color: control.fontcolor }} type="text" placeholder={control.text}></input>
                                         }</Rnd>
                                 ))}
                             </div>
@@ -433,44 +497,44 @@ class EditScreen extends Component {
                         <div className="properties-label">Properties</div>
                         {selected == -1 ? <input type="textfield" className="properties-box" value="" disabled></input> :
                         controls[selected].type == "container" ? <input type="textfield" className="properties-box" value={controls[selected].text} disabled></input> : 
-                        <input type="textfield" className="properties-box" value={controls[selected].text}></input>}
+                        <input type="textfield" className="properties-box" value={controls[selected].text} id="text" onChange={this.handleChangeText} ></input>}
                         <br />
                         <div className="row">
                             <div className="font-size-label col s6">Font Size:</div>
                             {selected == -1 ? <input type="number" className="browser-default font-size-box col s6" value="" disabled></input> :
                             controls[selected].type == "container" ? <input type="number" className="browser-default font-size-box col s6" disabled></input> :
-                            <input type="number" className="browser-default font-size-box col s6" value={fontsize}></input>}
+                            <input type="number" className="browser-default font-size-box col s6" id="fontsize" value={fontsize} onChange={this.handleChangeFontSize}></input>}
                         </div>
                         <br /><br /><br />
                         <div className="row">
                             <div className="font-color-label col s5">Font Color:</div>
                             {selected == -1 ? <input type="color" className="browser-default font-color-box col s7" disabled value=""></input> :
                             controls[selected].type == "container" ? <input type="color" className="browser-default font-color-box col s7" disabled value=""></input> :
-                            <input type="color" className="browser-default font-color-box col s7"  value={controls[selected].fontcolor}></input>}
+                            <input type="color" className="browser-default font-color-box col s7"  value={controls[selected].fontcolor} id="fontcolor" onChange={this.handleChangeFontColor}></input>}
                         </div>
                         <br /><br /><br />
                         <div className="row">
                             <div className="background-color-label col s5">Background Color:</div>
                             {selected == -1 ? <input type="color" className="background-color-box col s7" disabled value=""></input> :
-                            <input type="color" className="background-color-box col s7" value={controls[selected].backgroundcolor}></input>}
+                            <input type="color" className="background-color-box col s7" value={controls[selected].backgroundcolor} id="backgroundcolor" onChange={this.handleChangeBackgroundColor}></input>}
                         </div>
                         <br /><br />
                         <div className="row">
                             <div className="border-color-label col s5">Border Color:</div>
                             {selected == -1 ? <input type="color" className="border-color-box col s7" disabled value=""></input> :
-                            <input type="color" className="border-color-box col s7" disabled value={controls[selected].bordercolor}></input>}
+                            <input type="color" className="border-color-box col s7" value={controls[selected].bordercolor} id="bordercolor" onChange={this.handleChangeBorderColor}></input>}
                         </div>
                         <br /><br />
                         <div className="row">
                             <div className="border-thickness-label col s5">Border Thickness:</div>
-                            {selected == -1 ? <input type="number" className="browser-default border-thickness-box col s7" disabled></input> :
-                            <input type="number" className="browser-default border-thickness-box col s7" value={borderthickness}></input>}
+                            {selected == -1 ? <input type="number" className="browser-default border-thickness-box col s7" disabled value=""></input> :
+                            <input type="number" className="browser-default border-thickness-box col s7" value={borderthickness} id="borderthickness" onChange={this.handleChangeBorderThickness}></input>}
                         </div>
                         <br /><br />
                         <div className="row">
                             <div className="border-radius-label col s5">Border Radius:</div>
-                            {selected == -1 ? <input type="number" className="browser-default border-radius-box col s7" disabled></input> :
-                            <input type="number" className="browser-default border-radius-box col s7" value={borderradius}></input>}
+                            {selected == -1 ? <input type="number" className="browser-default border-radius-box col s7" disabled value=""></input> :
+                            <input type="number" className="browser-default border-radius-box col s7" value={borderradius} id="borderradius" onChange={this.handleChangeBorderRadius}></input>}
                         </div>
                     </div>
                 </div>
