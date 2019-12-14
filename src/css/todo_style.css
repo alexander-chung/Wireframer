@@ -314,6 +314,7 @@ a {
 }
 
 .main-edit-screen {
+  position: relative;
   width: 950px;
   height: 750px;
   border: 1px solid black;
@@ -324,5 +325,6 @@ a {
 }
 
 .main-wireframer {
+  position: absolute;
   overflow: auto;
 }

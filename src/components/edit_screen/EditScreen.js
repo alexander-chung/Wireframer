@@ -17,10 +17,10 @@ class EditScreen extends Component {
         close: false,
         zoom: 1,
         selected: -1,
-        pixelWidth: 900,
-        pixelHeight: 700,
-        pixelWidthProxy: 900,
-        pixelHeightProxy: 700,
+        pixelWidth: this.getWireframerWidth(),
+        pixelHeight: this.getWireframerHeight(),
+        pixelWidthProxy: this.getWireframerWidth(),
+        pixelHeightProxy: this.getWireframerHeight(),
         text: "",
         fontsize: 0,
         fontcolor: "",
@@ -41,6 +41,22 @@ class EditScreen extends Component {
         if (this.props.wireframer) {
             let controls = this.props.wireframer.controls
             return controls;
+        }
+    }
+
+    getWireframerWidth() {
+        if (this.props.wireframer) {
+            let width = this.props.wireframer.pixelWidth
+            return width
+
+        }
+    }
+
+    getWireframerHeight() {
+        if (this.props.wireframer) {
+            let height = this.props.wireframer.pixelHeight
+            return height
+
         }
     }
 
@@ -141,12 +157,15 @@ class EditScreen extends Component {
         this.setState({
             zoom: (this.state.zoom * 2)
         })
+        this.forceUpdate();
     }
 
     processZoomOut = (e) => {
         this.setState({
             zoom: (this.state.zoom * 0.5)
         })
+        this.forceUpdate();
+
     }
 
     processSave = (e) => {
@@ -154,7 +173,8 @@ class EditScreen extends Component {
         firestore.collection('wireframers').doc(this.props.wireframer.id).update({
             name: this.state.name,
             pixelHeight: this.state.pixelHeight,
-            pixelWidth: this.state.pixelWidth
+            pixelWidth: this.state.pixelWidth,
+            controls: this.state.controls
         })
     }
 
@@ -163,7 +183,8 @@ class EditScreen extends Component {
         firestore.collection('wireframers').doc(this.props.wireframer.id).update({
             name: this.state.name,
             pixelHeight: this.state.pixelHeight,
-            pixelWidth: this.state.pixelWidth
+            pixelWidth: this.state.pixelWidth,
+            controls: this.state.controls
         })
         this.goHome();
     }
@@ -330,7 +351,7 @@ class EditScreen extends Component {
             e.preventDefault();
             if(this.state.selected != -1) {
                 var controls = JSON.parse(JSON.stringify(this.state.controls));
-                controls.splice(this.state.selected-1, 1)
+                controls.splice(this.state.selected, 1)
                 controls.map(control => control.id = controls.indexOf(control))
                 this.setState({
                     controls: controls,
@@ -467,12 +488,9 @@ class EditScreen extends Component {
                                 {controls.map(control => (
                                     <Rnd
                                         bounds="parent"
-                                        default={{
-                                            x: control.x,
-                                            y: control.y,
-                                            width: control.width,
-                                            height: control.height,
-                                        }}
+                                        size = {{width: control.width, height: control.height}}
+                                        position = {{x: control.x, y: control.y}}
+                                        
                                         resizeHandleStyles={selected == control.id ? {
                                             topLeft: handleStylesTL,
                                             topRight: handleStylesTR,
