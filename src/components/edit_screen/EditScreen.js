@@ -68,16 +68,12 @@ class EditScreen extends Component {
     }
 
     processZoomIn = (e) => {
-        // var zoomTarget = document.getElementById("main-wireframer")
-        // zoomTarget.style.zoom = ((this.state.zoom * 2));
         this.setState({
             zoom: (this.state.zoom * 2)
         })
     }
 
     processZoomOut = (e) => {
-        // var zoomTarget = document.getElementById("main-wireframer")
-        // zoomTarget.style.zoom = ((this.state.zoom * 0.5));
         this.setState({
             zoom: (this.state.zoom * 0.5)
         })
@@ -123,7 +119,7 @@ class EditScreen extends Component {
             x: 0,
             y: 0,
             text: "N/A",
-            fontsize: -1,
+            fontsize: "0px",
             fontcolor: "#000000",
             backgroundcolor: "#ffffff",
             bordercolor: "#000000",
@@ -134,7 +130,8 @@ class EditScreen extends Component {
         var newControls = this.state.controls;
         newControls.push(newContainer);
         this.setState({
-            controls: newControls
+            controls: newControls,
+            selected: newContainer.id
         })
     }
 
@@ -147,7 +144,7 @@ class EditScreen extends Component {
             x: 0,
             y: 0,
             text: "Label",
-            fontsize: "14px",
+            fontsize: "12px",
             fontcolor: "#000000",
             backgroundcolor: "transparent",
             bordercolor: "#000000",
@@ -158,7 +155,8 @@ class EditScreen extends Component {
         var newControls = this.state.controls;
         newControls.push(newLabel);
         this.setState({
-            controls: newControls
+            controls: newControls,
+            selected: newLabel.id
         })
     }
 
@@ -182,7 +180,8 @@ class EditScreen extends Component {
         var newControls = this.state.controls;
         newControls.push(newSubmitBox);
         this.setState({
-            controls: newControls
+            controls: newControls,
+            selected: newSubmitBox.id
         })
     }
 
@@ -206,7 +205,8 @@ class EditScreen extends Component {
         var newControls = this.state.controls;
         newControls.push(newTextfield);
         this.setState({
-            controls: newControls
+            controls: newControls,
+            selected: newTextfield.id
         })
     }
 
@@ -242,17 +242,20 @@ class EditScreen extends Component {
     }
 
     handleDeleteDuplicate = (e) => {
-        e.preventDefault();
         if (e.keyCode === 68 && e.ctrlKey) {
+            e.preventDefault();
             if(this.state.selected != -1) {
                 var controls = this.state.controls;
                 var duplicateControl = JSON.parse(JSON.stringify(controls[this.state.selected]));
-                console.log(controls.length)
-                console.log(duplicateControl)
                 duplicateControl.id = controls.length
+                var x = duplicateControl.x
+                var y = duplicateControl.y
+                x += 100
+                y += 100
+                duplicateControl.x = x;
+                duplicateControl.y = y;
                 controls.push(duplicateControl);
                 controls.map(control => control.id = controls.indexOf(control))
-                console.log(controls)
                 this.setState({
                     controls: controls,
                     selected: this.state.controls.length-1
@@ -260,9 +263,10 @@ class EditScreen extends Component {
             }
         }
         if (e.keyCode === 46) {
+            e.preventDefault();
             if(this.state.selected != -1) {
                 var controls = JSON.parse(JSON.stringify(this.state.controls));
-                controls.splice(this.state.selected, 1)
+                controls.splice(this.state.selected-1, 1)
                 controls.map(control => control.id = controls.indexOf(control))
                 this.setState({
                     controls: controls,
@@ -297,6 +301,19 @@ class EditScreen extends Component {
         }
         if (this.state.close) {
             return <Redirect to="/" />;
+        }
+
+        var fontsize = 0;
+        var borderthickness = 0;
+        var borderradius = 0;
+        if (selected != -1) {
+            var fontsizeString = controls[selected].fontsize
+            fontsize = parseInt(fontsizeString.slice(0,-2),10)
+            var borderthicknessString = controls[selected].borderthickness
+            borderthickness = parseInt(borderthicknessString.slice(0,-2), 10)
+            var borderradiusString = controls[selected].borderradius
+            borderradius = parseInt(borderradiusString.slice(0,-2), 10)
+            
         }
 
         var handleStylesTL = {
@@ -414,36 +431,46 @@ class EditScreen extends Component {
                     </div>
                     <div className="col s2 edit3">
                         <div className="properties-label">Properties</div>
-                        <input type="textfield" className="properties-box"></input>
+                        {selected == -1 ? <input type="textfield" className="properties-box" value="" disabled></input> :
+                        controls[selected].type == "container" ? <input type="textfield" className="properties-box" value={controls[selected].text} disabled></input> : 
+                        <input type="textfield" className="properties-box" value={controls[selected].text}></input>}
                         <br />
                         <div className="row">
                             <div className="font-size-label col s6">Font Size:</div>
-                            <input type="number" className="browser-default font-size-box col s6"></input>
+                            {selected == -1 ? <input type="number" className="browser-default font-size-box col s6" value="" disabled></input> :
+                            controls[selected].type == "container" ? <input type="number" className="browser-default font-size-box col s6" disabled></input> :
+                            <input type="number" className="browser-default font-size-box col s6" value={fontsize}></input>}
                         </div>
                         <br /><br /><br />
                         <div className="row">
                             <div className="font-color-label col s5">Font Color:</div>
-                            <input type="color" className="browser-default font-color-box col s7"></input>
+                            {selected == -1 ? <input type="color" className="browser-default font-color-box col s7" disabled value=""></input> :
+                            controls[selected].type == "container" ? <input type="color" className="browser-default font-color-box col s7" disabled value=""></input> :
+                            <input type="color" className="browser-default font-color-box col s7"  value={controls[selected].fontcolor}></input>}
                         </div>
                         <br /><br /><br />
                         <div className="row">
                             <div className="background-color-label col s5">Background Color:</div>
-                            <input type="color" className="background-color-box col s7"></input>
+                            {selected == -1 ? <input type="color" className="background-color-box col s7" disabled value=""></input> :
+                            <input type="color" className="background-color-box col s7" value={controls[selected].backgroundcolor}></input>}
                         </div>
                         <br /><br />
                         <div className="row">
                             <div className="border-color-label col s5">Border Color:</div>
-                            <input type="color" className="border-color-box col s7"></input>
+                            {selected == -1 ? <input type="color" className="border-color-box col s7" disabled value=""></input> :
+                            <input type="color" className="border-color-box col s7" disabled value={controls[selected].bordercolor}></input>}
                         </div>
                         <br /><br />
                         <div className="row">
                             <div className="border-thickness-label col s5">Border Thickness:</div>
-                            <input type="textfield" className="border-thickness-box col s7"></input>
+                            {selected == -1 ? <input type="number" className="browser-default border-thickness-box col s7" disabled></input> :
+                            <input type="number" className="browser-default border-thickness-box col s7" value={borderthickness}></input>}
                         </div>
                         <br /><br />
                         <div className="row">
                             <div className="border-radius-label col s5">Border Radius:</div>
-                            <input type="number" className="browser-default border-radius-box col s7"></input>
+                            {selected == -1 ? <input type="number" className="browser-default border-radius-box col s7" disabled></input> :
+                            <input type="number" className="browser-default border-radius-box col s7" value={borderradius}></input>}
                         </div>
                     </div>
                 </div>

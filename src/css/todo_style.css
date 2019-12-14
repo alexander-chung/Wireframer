@@ -314,7 +314,6 @@ a {
 }
 
 .main-edit-screen {
-  postion: absolute;
   width: 950px;
   height: 750px;
   border: 1px solid black;
