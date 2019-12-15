@@ -387,6 +387,7 @@ class EditScreen extends Component {
         if (this.state.close) {
             return <Redirect to="/" />;
         }
+        console.log(auth)
 
         var fontsize = 0;
         var borderthickness = 0;
@@ -484,7 +485,7 @@ class EditScreen extends Component {
                     </div>
                     <div className="col s8 edit2">
                         <div className="main-edit-screen" id="main-edit-screen">
-                            <div className="main-wireframer" onClick={this.handleDeselect} id="main-wireframer" style={{ width: (this.state.pixelWidth + "px"), height: (this.state.pixelHeight + "px"), background: "white", transform: "scale(" + this.state.zoom + ")", transformOrigin: "top left" }}>
+                            <div className="main-wireframer" onClick={this.handleDeselect} id="main-wireframer" style={{ width: (this.state.pixelWidth + "px"), height: (this.state.pixelHeight + "px"), background: "white", transform: "scale(" + this.state.zoom + ")" }}>
                                 {controls.map(control => (
                                     <Rnd
                                         bounds="parent"

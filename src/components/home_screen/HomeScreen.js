@@ -12,8 +12,6 @@ class HomeScreen extends Component {
         gotNew: false
     }
 
-    
-
     handleNewList = () => {
         var newFramer = {
             controls: [],
@@ -40,6 +38,7 @@ class HomeScreen extends Component {
             return <Redirect to={"/wireframers/" + this.props.wireframers[0].id} />;
         }
         const wireframers = this.props.wireframers
+        console.log(wireframers)
         return (
             <div className="dashboard container">
                 <div className="row">
