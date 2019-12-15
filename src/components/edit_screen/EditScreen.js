@@ -320,6 +320,12 @@ class EditScreen extends Component {
         })
     }
 
+    handleInputOnFocus = (id) => {
+        this.setState({
+            selected: id
+        })
+    }
+
     handleDeselect = (e) => {
         this.setState({
             selected: -1
@@ -485,7 +491,7 @@ class EditScreen extends Component {
                     </div>
                     <div className="col s8 edit2">
                         <div className="main-edit-screen" id="main-edit-screen">
-                            <div className="main-wireframer" onClick={this.handleDeselect} id="main-wireframer" style={{ width: (this.state.pixelWidth + "px"), height: (this.state.pixelHeight + "px"), background: "white", transform: "scale(" + this.state.zoom + ")" }}>
+                            <div className="main-wireframer" onClick={this.handleDeselect} id="main-wireframer" style={{ width: (this.state.pixelWidth + "px"), height: (this.state.pixelHeight + "px"), background: "white", transform: "scale(" + this.state.zoom + ")", transformOrigin: "top left" }}>
                                 {controls.map(control => (
                                     <Rnd
                                         bounds="parent"
@@ -506,7 +512,7 @@ class EditScreen extends Component {
                                             <div onClick={(evt) => this.handleSelected(control.id, evt)} style={{ overflow: "hidden", width: control.width, height: control.height, border: (control.borderthickness + " " + control.bordercolor + " solid"), background: control.backgroundcolor, borderRadius: control.borderradius, fontSize: control.fontsize, color: control.fontcolor }}>{control.text}</div> :
                                             control.type == "button" ?
                                                 <button onClick={(evt) => this.handleSelected(control.id, evt)} style={{ overflow: "hidden", width: control.width, height: control.height, border: (control.borderthickness + " " + control.bordercolor + " solid"), background: control.backgroundcolor, borderRadius: control.borderradius, fontSize: control.fontsize, color: control.fontcolor }}>{control.text}</button> :
-                                                <input onClick={(evt) => this.handleSelected(control.id, evt)} style={{ overflow: "hidden", width: control.width, height: control.height, border: (control.borderthickness + " " + control.bordercolor + " solid"), background: control.backgroundcolor, borderRadius: control.borderradius, fontSize: control.fontsize, color: control.fontcolor }} type="text" placeholder={control.text}></input>
+                                                <input onClick={(evt) => this.handleSelected(control.id, evt)} onFocus={() => this.handleInputOnFocus(control.id)} style={{ overflow: "hidden", width: control.width, height: control.height, border: (control.borderthickness + " " + control.bordercolor + " solid"), background: control.backgroundcolor, borderRadius: control.borderradius, fontSize: control.fontsize, color: control.fontcolor }} type="text" placeholder={control.text}></input>
                                         }</Rnd>
                                 ))}
                             </div>
