@@ -48,7 +48,7 @@ class WireframerCard extends React.Component {
                     </div>
                     <div className="modal-footer">
                         <a className="waves-effect waves-green btn-flat" onClick={this.deleteWireframer}>Yes</a>
-                        <a href="#!" className="modal-close waves-effect waves-green btn-flat right">No</a>
+                        <a href="#!" className="modal-close waves-effect waves-green btn-flat right" onClick={this.stopProp}>No</a>
                     </div>
                 </div>
             </div>
