@@ -304,10 +304,12 @@ class EditScreen extends Component {
         })
     }
 
-    handleResize = (id, ref) => {
+    handleResize = (id, ref, position) => {
         var controls = this.state.controls;
-        controls[id].width = ref.style.width
-        controls[id].height = ref.style.height
+        controls[id].width = ref.style.width;
+        controls[id].height = ref.style.height;
+        controls[id].x = position.x;
+        controls[id].y = position.y;
         this.setState({
             controls: controls
         })
@@ -505,7 +507,7 @@ class EditScreen extends Component {
                                             bottomRight: handleStylesBR
                                         } : {}}
                                         onDragStop={(e, d) => this.handleReposition(control.id, d)}
-                                        onResize={(e, dir, ref, delta, position) => this.handleResize(control.id, ref)}
+                                        onResize={(e, dir, ref, delta, position) => this.handleResize(control.id, ref, position)}
                                     >{control.type == "container" ?
                                         <div onClick={(evt) => this.handleSelected(control.id, evt)} style={{ width: control.width, height: control.height, border: (control.borderthickness + " " + control.bordercolor + " solid"), background: control.backgroundcolor, borderRadius: control.borderradius }}></div> :
                                         control.type == "label" ?
