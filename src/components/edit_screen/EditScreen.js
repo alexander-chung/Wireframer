@@ -493,7 +493,7 @@ class EditScreen extends Component {
                     </div>
                     <div className="col s8 edit2">
                         <div className="main-edit-screen" id="main-edit-screen">
-                            <div className="main-wireframer" onClick={this.handleDeselect} id="main-wireframer" style={{ width: (this.state.pixelWidth + "px"), height: (this.state.pixelHeight + "px"), background: "white",zoom: this.state.zoom}}>
+                            <div className="main-wireframer" onClick={this.handleDeselect} id="main-wireframer" style={{ width: (this.state.pixelWidth + "px"), height: (this.state.pixelHeight + "px"), background: "white",zoom: this.state.zoom, MozTransform: "scale(" + this.state.zoom + ")"}}>
                                 {controls && controls.map(control => (
                                     <Rnd
                                         bounds="parent"
