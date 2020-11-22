@@ -1,6 +1,6 @@
 # Wireframer
 
-A simple clean wireframer for prototyping different elements of a UX/UI design.
+A simple clean wireframer for prototyping different elements of a UX/UI design. Created using React and connected to Firebase Authentication and Firestore.
 
 ### Set Up
 
