@@ -4,7 +4,7 @@ import 'firebase/auth';
 
 // THIS IS USED TO INITIALIZE THE firebase OBJECT
 // PUT YOUR FIREBASE PROJECT CONFIG STUFF HERE
-var firebaseConfig = {
+const firebaseConfig = {
   apiKey: "AIzaSyDCDr8InA9WOxMHRXSrYhX3pMq85znKGK8",
   authDomain: "cse316-final.firebaseapp.com",
   databaseURL: "https://cse316-final.firebaseio.com",

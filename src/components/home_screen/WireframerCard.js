@@ -35,7 +35,7 @@ class WireframerCard extends React.Component {
         }
         const { wireframer } = this.props;
         return (
-            <div className="card z-depth-0">
+            <div className="card z-depth-0 wireframer-card">
                 <div className="row">
                     <button data-target="modal2" className="modal-trigger col 3 delete-button" onClick={this.stopProp}>&#10007;</button>
                         <div className="card-content grey-text text-darken-3 col 9 card-width">
